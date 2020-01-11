@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./styles.css";
+//import data from './data.json';
 import logo from "./images/logo.png";
 
 function CharacterCard(props) {
@@ -35,7 +36,10 @@ class App extends React.Component {
   }
 
   fetchCharacters = async () => {
-    this.setState({ loading: true, error: null });
+    this.setState({ 
+      loading: true, 
+      error: null 
+    });
 
     try {
       const response = await fetch(
@@ -47,18 +51,24 @@ class App extends React.Component {
         loading: false,
         data: {
           info: data.info,
-          results: [].concat(this.state.data.results, data.results)
+          results: [].concat(
+            this.state.data.results, 
+            data.results
+          )
         },
         nextPage: this.state.nextPage + 1
       });
     } catch (error) {
-      this.setState({ loading: false, error: error });
+      this.setState({ 
+        loading: false, 
+        error: error 
+      });
     }
   };
 
   render() {
     if (this.state.error) {
-      return "Error!";
+      return `Error: ${this.state.error.message}`;
     }
 
     return (
@@ -74,7 +84,9 @@ class App extends React.Component {
             ))}
           </ul>
 
-          {this.state.loading && <p className="text-center">Loading...</p>}
+          {this.state.loading && (
+            <p className="text-center">Loading...</p>
+          )}
 
           {!this.state.loading && this.state.data.info.next && (
             <button onClick={() => this.fetchCharacters()}>Load More</button>
